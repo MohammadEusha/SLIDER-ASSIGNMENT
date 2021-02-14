@@ -42,14 +42,22 @@ const showImages = (images) => {
 }
 
 const getImages = (query) => {
-
-  const url =`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`
+  const url = `https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`
   toggleSpinner();
+    errorInfo(false);
   fetch(url)
     .then(response => response.json())
-    .then(data => showImages(data.hits))
-    .catch(err => console.log(err))
-}
+    .then(data => {
+      if ((data.hits).length > 0) {
+        showImages(data.hits);
+      }
+      else {
+        imagesArea.style.display = 'none';
+        errorInfo(true);
+        toggleSpinner();
+      }
+    })
+  }
 
 let slideIndex = 0;
 const selectItem = (event, img) => {
@@ -59,11 +67,11 @@ const selectItem = (event, img) => {
   let item = sliders.indexOf(img);
   if (item === -1) {
     sliders.push(img);
-  }
-  else{
-    sliders.pop(img)
+  } else {
+    sliders.splice(item, 1);
   }
 }
+
 var timer
 const createSlider = () => {
   // check slider image length
@@ -146,4 +154,15 @@ sliderBtn.addEventListener('click', function () {
 const toggleSpinner = () => {
   const spinner = document.getElementById('loading-spinner');
   spinner.classList.toggle('d-none');
+}
+
+const errorInfo = (show) => {
+  const error = document.getElementById('error');
+  if (show) {
+    error.classList.add('d-flex');
+  }
+  else {
+    error.classList.remove('d-flex');
+  }
+
 }
