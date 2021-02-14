@@ -151,11 +151,14 @@ sliderBtn.addEventListener('click', function () {
   createSlider()
 })
 
+
+// Spinner
 const toggleSpinner = () => {
   const spinner = document.getElementById('loading-spinner');
   spinner.classList.toggle('d-none');
 }
 
+// Error
 const errorInfo = (show) => {
   const error = document.getElementById('error');
   if (show) {
